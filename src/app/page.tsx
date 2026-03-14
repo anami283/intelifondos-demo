@@ -243,7 +243,7 @@ export default function LandingPage() {
                   <div className="w-3 h-3 rounded-full bg-red-400" />
                   <div className="w-3 h-3 rounded-full bg-yellow-400" />
                   <div className="w-3 h-3 rounded-full bg-green-400" />
-                  <span className="text-whitetext-gray-100 text-xs ml-2">COFEM · Dashboard</span>
+                  <span className="text-white text-gray-100 text-xs ml-2">COFEM · Dashboard</span>
                 </div>
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   {[
@@ -253,7 +253,7 @@ export default function LandingPage() {
                     { label: "Recaudo Mar", val: "$64.3M", color: "text-white" },
                   ].map((k) => (
                     <div key={k.label} className="bg-gray-50 rounded-lg p-3">
-                      <p className="text-xs text-whitetext-gray-100">{k.label}</p>
+                      <p className="text-xs text-white text-gray-100">{k.label}</p>
                       <p className={`text-lg font-bold ${k.color}`}>{k.val}</p>
                     </div>
                   ))}
@@ -348,7 +348,7 @@ export default function LandingPage() {
                     <span className="text-2xl font-bold text-white">
                       {p.precio === "A convenir" ? p.precio : `$${p.precio}`}
                     </span>
-                    {p.precio !== "A convenir" && <span className="text-whitetext-gray-100 text-sm">/mes</span>}
+                    {p.precio !== "A convenir" && <span className="text-white text-gray-100 text-sm">/mes</span>}
                   </div>
                   <ul className="space-y-2 mb-6">
                     {p.features.map((f) => (
@@ -398,7 +398,7 @@ export default function LandingPage() {
                   <div>
                     <p className="font-semibold text-white text-sm">{t.nombre}</p>
                     <p className="text-xs text-gray-500">{t.cargo}</p>
-                    <p className="text-xs text-whitetext-gray-100">{t.ciudad}</p>
+                    <p className="text-xs text-white text-gray-100">{t.ciudad}</p>
                   </div>
                 </div>
               ))}
@@ -444,7 +444,7 @@ export default function LandingPage() {
       {leadModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative">
-            <button onClick={() => setLeadModal(false)} className="absolute top-4 right-4 text-whitetext-gray-100 hover:text-gray-600 text-xl">&times;</button>
+            <button onClick={() => setLeadModal(false)} className="absolute top-4 right-4 text-white text-gray-100 hover:text-gray-600 text-xl">&times;</button>
             <h2 className="text-xl font-bold text-white mb-1">Solicitar licencia</h2>
             <p className="text-sm text-gray-500 mb-5">Un asesor le contactará en menos de 24 horas.</p>
             <form onSubmit={handleSubmit} className="space-y-3">
