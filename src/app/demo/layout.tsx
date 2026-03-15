@@ -7,8 +7,12 @@ export default function DemoLayout({ children }: { children: React.ReactNode }) 
       <DemoBanner />
       <Sidebar />
       <main
-        className="pt-10 lg:pl-64 min-h-screen"
-        style={{ background: "#f8fafc" }}
+        style={{
+          paddingTop: "2.5rem",
+          paddingLeft: "16rem",
+          minHeight: "100vh",
+          background: "#f8fafc",
+        }}
       >
         {children}
       </main>
