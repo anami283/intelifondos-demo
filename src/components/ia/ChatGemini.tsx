@@ -1,254 +1,156 @@
 "use client";
-
 import { useState, useRef, useEffect } from "react";
-import { Send, Bot, User, ChevronDown, ChevronUp, Sparkles } from "lucide-react";
-import { cartera_contexto_ia } from "@/data/demo-data";
+import { Send, Bot, User } from "lucide-react";
 
-interface Message {
-    role: "user" | "model";
-    content: string;
+interface Mensaje {
+  rol: "usuario" | "asistente";
+  texto: string;
 }
 
-const quickQuestions = [
-    "Cual es el indice de mora actual?",
-    "Cuantos creditos activos tenemos?",
-    "Como va el recaudo este mes?",
-    "Cual es la tasa de aprobacion?",
-  ];
-
-const initialHistory: Message[] = [
-  {
-        role: "user",
-        content: "Cual es el estado general de la cartera de COFEM?",
-  },
-  {
-        role: "model",
-        content:
-                "La cartera de COFEM muestra un desempeno solido con $847.500.000 COP en creditos activos (127 creditos vigentes). El indice de calidad de cartera es del 3,2%, dentro del rango aceptable para fondos de empleados. El recaudo mensual alcanzo $64.320.000 COP, con desembolsos crecientes: +9,5% respecto al mes anterior ($81M vs $74M). Los creditos en mora superan los $27M, lo que amerita seguimiento especial en los casos de 30+ dias.",
-  },
-  {
-        role: "user",
-        content: "Cuantas solicitudes estan pendientes de aprobacion?",
-  },
-  {
-        role: "model",
-        content:
-                "Actualmente hay 3 solicitudes pendientes y 2 en revision por el comite, para un total de 5 en proceso. La tasa de aprobacion mensual se mantiene en 68%, con un score promedio de 91/100 para los creditos aprobados. El sistema de IA ha analizado todas las solicitudes activas y tiene recomendaciones disponibles para cada caso.",
-  },
-  ];
+const CHIPS = [
+  "Cual es el ICV actual?",
+  "Cuantas solicitudes hay pendientes?",
+  "Resume la planilla de nomina",
+  "Que alertas de mora hay?",
+  "Como esta la cartera de creditos?",
+];
 
 export function ChatGemini() {
-    const [messages, setMessages] = useState<Message[]>(initialHistory);
-    const [input, setInput] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [showContext, setShowContext] = useState(false);
-    const endRef = useRef<HTMLDivElement>(null);
+  const [mensajes, setMensajes] = useState<Mensaje[]>([
+    { rol: "asistente", texto: "Hola! Soy el asistente IA de Intelifondos. Puedo ayudarte con informacion sobre cartera, nomina, solicitudes y mas. Como puedo ayudarte hoy?" },
+  ]);
+  const [input, setInput] = useState("");
+  const [cargando, setCargando] = useState(false);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-        endRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, loading]);
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [mensajes]);
 
-  const sendMessage = async (text: string) => {
-        if (!text.trim() || loading) return;
-        const userMsg: Message = { role: "user", content: text };
-        setMessages((prev) => [...prev, userMsg]);
-        setInput("");
-        setLoading(true);
+  const enviar = async (texto?: string) => {
+    const msg = texto || input.trim();
+    if (!msg || cargando) return;
+    setInput("");
+    const nuevos: Mensaje[] = [...mensajes, { rol: "usuario", texto: msg }];
+    setMensajes(nuevos);
+    setCargando(true);
 
-        try {
-                const res = await fetch("/api/ai/chat", {
-                          method: "POST",
-                          headers: { "Content-Type": "application/json" },
-                          body: JSON.stringify({ mensaje: text, historial: messages }),
-                });
-                if (!res.ok) throw new Error("Error en la API");
-                if (!res.body) throw new Error("Sin respuesta");
-
-          const reader = res.body.getReader();
-                const decoder = new TextDecoder();
-                let aiText = "";
-                setMessages((prev) => [...prev, { role: "model", content: "" }]);
-
-          while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-                    aiText += decoder.decode(value, { stream: true });
-                    setMessages((prev) => {
-                                const updated = [...prev];
-                                updated[updated.length - 1] = { role: "model", content: aiText };
-                                return updated;
-                    });
-          }
-        } catch {
-                setMessages((prev) => [
-                          ...prev,
-                  { role: "model", content: "Lo siento, ocurrio un error. Por favor intente nuevamente." },
-                        ]);
-        } finally {
-                setLoading(false);
-        }
+    try {
+      const historial = nuevos.slice(0, -1).map((m) => ({
+        rol: m.rol === "usuario" ? "user" : "model",
+        texto: m.texto,
+      }));
+      const res = await fetch("/api/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mensaje: msg, historial }),
+      });
+      if (!res.ok || !res.body) throw new Error("Error");
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      let respuesta = "";
+      setMensajes([...nuevos, { rol: "asistente", texto: "" }]);
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        respuesta += dec.decode(value, { stream: true });
+        setMensajes([...nuevos, { rol: "asistente", texto: respuesta }]);
+      }
+    } catch {
+      setMensajes([...nuevos, { rol: "asistente", texto: "Error al conectar con Gemini. Intente de nuevo." }]);
+    } finally {
+      setCargando(false);
+    }
   };
 
   return (
-        <div className="flex flex-col gap-4 h-full">
-          {/* Panel contexto */}
-              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-                      <button
-                                  onClick={() => setShowContext(!showContext)}
-                                  className="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
-                                >
-                                <span className="flex items-center gap-2">
-                                            <span className="w-2 h-2 rounded-full" style={{ background: "#00B894" }} />
-                                            Contexto enviado a Gemini
-                                </span>span>
-                        {showContext ? <ChevronUp className="w-4 h-4 text-slate-400" /> : <ChevronDown className="w-4 h-4 text-slate-400" />}
-                      </button>button>
-                {showContext && (
-                    <div className="px-4 pb-4 border-t border-slate-100">
-                                <pre className="text-xs bg-slate-50 rounded-lg p-3 overflow-auto max-h-48 text-slate-600 font-mono mt-3">
-                                  {JSON.stringify(cartera_contexto_ia, null, 2)}
-                                </pre>pre>
-                    </div>div>
-                      )}
-              </div>div>
-        
-          {/* Chat principal */}
-              <div
-                        className="bg-white rounded-2xl border border-slate-200 shadow-sm flex flex-col overflow-hidden"
-                        style={{ height: "calc(100vh - 19rem)", minHeight: "480px" }}
-                      >
-                {/* Header del chat */}
-                      <div
-                                  className="flex-shrink-0 px-5 py-4 border-b border-slate-100"
-                                  style={{ background: "linear-gradient(135deg, #0A2540 0%, #0d3460 100%)" }}
-                                >
-                                <div className="flex items-center gap-3">
-                                            <div
-                                                            className="w-9 h-9 rounded-xl flex items-center justify-center"
-                                                            style={{ background: "rgba(0,184,148,0.2)", border: "1px solid rgba(0,184,148,0.3)" }}
-                                                          >
-                                                          <Sparkles className="w-4 h-4" style={{ color: "#00B894" }} />
-                                            </div>div>
-                                            <div>
-                                                          <p className="text-sm font-bold text-white">Asistente Financiero IA</p>p>
-                                                          <p className="text-xs" style={{ color: "#64748b" }}>Gemini 1.5 Flash - Datos COFEM en tiempo real</p>p>
-                                            </div>div>
-                                            <div className="ml-auto flex items-center gap-1.5">
-                                                          <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#00B894" }} />
-                                                          <span className="text-xs font-semibold" style={{ color: "#00B894" }}>En linea</span>span>
-                                            </div>div>
-                                </div>div>
-                      </div>div>
-              
-                {/* Mensajes con scroll */}
-                      <div
-                                  className="flex-1 overflow-y-auto px-5 py-5 space-y-4"
-                                  style={{ scrollbarWidth: "thin", scrollbarColor: "#e2e8f0 transparent" }}
-                                >
-                        {messages.map((msg, i) => (
-                                              <div key={i} className={`flex gap-3 ${msg.role === "user" ? "flex-row-reverse" : ""}`}>
-                                                            <div
-                                                                              className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                                                                              style={{
-                                                                                                  background: msg.role === "model" ? "#0A2540" : "#00B894",
-                                                                                                  boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-                                                                              }}
-                                                                            >
-                                                              {msg.role === "model" ? (
-                                                                                                <Bot className="w-4 h-4" style={{ color: "#00B894" }} />
-                                                                                              ) : (
-                                                                                                <User className="w-4 h-4 text-white" />
-                                                                                              )}
-                                                            </div>div>
-                                                            <div
-                                                                              className="rounded-2xl px-4 py-3 max-w-[78%] text-sm leading-relaxed"
-                                                                              style={msg.role === "model" ? {
-                                                                                                  background: "#f8fafc",
-                                                                                                  color: "#334155",
-                                                                                                  border: "1px solid #e2e8f0",
-                                                                                                  borderTopLeftRadius: "4px",
-                                                                              } : {
-                                                                                                  background: "#0A2540",
-                                                                                                  color: "#ffffff",
-                                                                                                  borderTopRightRadius: "4px",
-                                                                              }}
-                                                                            >
-                                                              {msg.content || (
-                                                                                                <span className="inline-flex gap-1 items-center py-0.5">
-                                                                                                                    <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#00B894", animationDelay: "0ms" }} />
-                                                                                                                    <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#00B894", animationDelay: "150ms" }} />
-                                                                                                                    <span className="w-2 h-2 rounded-full animate-bounce" style={{ background: "#00B894", animationDelay: "300ms" }} />
-                                                                                                  </span>span>
-                                                                            )}
-                                                            </div>div>
-                                              </div>div>
-                                            ))}
-                                <div ref={endRef} />
-                      </div>div>
-              
-                {/* Chips preguntas rapidas */}
-                      <div className="flex-shrink-0 px-5 py-3 border-t border-slate-100" style={{ background: "#fafbfc" }}>
-                                <p className="text-xs font-semibold mb-2 uppercase tracking-wide" style={{ color: "#94a3b8" }}>Preguntas frecuentes</p>p>
-                                <div className="flex flex-wrap gap-2">
-                                  {quickQuestions.map((q) => (
-                                      <button
-                                                        key={q}
-                                                        onClick={() => sendMessage(q)}
-                                                        disabled={loading}
-                                                        className="text-xs bg-white border border-slate-200 px-3 py-1.5 rounded-full transition-all hover:scale-105 disabled:opacity-50 font-medium"
-                                                        style={{ color: "#0A2540" }}
-                                                        onMouseEnter={(e) => {
-                                                                            (e.currentTarget as HTMLElement).style.borderColor = "#00B894";
-                                                                            (e.currentTarget as HTMLElement).style.color = "#00B894";
-                                                        }}
-                                                        onMouseLeave={(e) => {
-                                                                            (e.currentTarget as HTMLElement).style.borderColor = "#e2e8f0";
-                                                                            (e.currentTarget as HTMLElement).style.color = "#0A2540";
-                                                        }}
-                                                      >
-                                        {q}
-                                      </button>button>
-                                    ))}
-                                </div>div>
-                      </div>div>
-              
-                {/* Input */}
-                      <div className="flex-shrink-0 px-5 py-4 border-t border-slate-100 bg-white">
-                                <div className="flex gap-3">
-                                            <input
-                                                            value={input}
-                                                            onChange={(e) => setInput(e.target.value)}
-                                                            onKeyDown={(e) => e.key === "Enter" && sendMessage(input)}
-                                                            placeholder="Consulte sobre cartera, mora, solicitudes..."
-                                                            disabled={loading}
-                                                            className="flex-1 border border-slate-200 rounded-xl px-4 py-2.5 text-sm focus:outline-none disabled:opacity-50 transition-all"
-                                                            style={{ background: "#f8fafc" }}
-                                                            onFocus={(e) => { e.currentTarget.style.borderColor = "#00B894"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(0,184,148,0.12)"; }}
-                                                            onBlur={(e) => { e.currentTarget.style.borderColor = "#e2e8f0"; e.currentTarget.style.boxShadow = "none"; }}
-                                                          />
-                                            <button
-                                                            onClick={() => sendMessage(input)}
-                                                            disabled={loading || !input.trim()}
-                                                            className="p-3 rounded-xl transition-all hover:scale-105 active:scale-95 disabled:opacity-40"
-                                                            style={{
-                                                                              background: input.trim() && !loading ? "#0A2540" : "#e2e8f0",
-                                                                              color: input.trim() && !loading ? "#ffffff" : "#94a3b8",
-                                                                              boxShadow: input.trim() && !loading ? "0 2px 8px rgba(10,37,64,0.25)" : "none",
-                                                            }}
-                                                          >
-                                                          <Send className="w-4 h-4" />
-                                            </button>button>
-                                </div>div>
-                      </div>div>
-              
-                {/* Footer discreto */}
-                      <div className="flex-shrink-0 px-5 pb-2.5 flex items-center justify-center gap-1.5">
-                                <Sparkles className="w-3 h-3" style={{ color: "#cbd5e1" }} />
-                                <p className="text-[11px]" style={{ color: "#cbd5e1" }}>
-                                            Respuestas generadas por Gemini API - Solo con fines demostrativos
-                                </p>p>
-                      </div>div>
-              </div>div>
-        </div>div>
-      );
-}</div>
+    <div className="flex flex-col h-full bg-white rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(226,232,240,0.8)", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}>
+      <div className="flex items-center gap-3 px-5 py-3.5" style={{ borderBottom: "1px solid #f1f5f9", background: "#0A2540" }}>
+        <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: "#00B894" }}>
+          <Bot className="w-4 h-4 text-white" />
+        </div>
+        <div>
+          <p className="text-sm font-bold text-white">Asistente IA</p>
+          <p className="text-xs" style={{ color: "rgba(255,255,255,0.6)" }}>Powered by Gemini</p>
+        </div>
+        <div className="ml-auto flex items-center gap-1.5">
+          <div className="w-2 h-2 rounded-full" style={{ background: "#00B894" }} />
+          <span className="text-xs" style={{ color: "rgba(255,255,255,0.6)" }}>En linea</span>
+        </div>
+      </div>
+
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 min-h-0">
+        {mensajes.map((m, i) => (
+          <div key={i} className={m.rol === "usuario" ? "flex justify-end" : "flex justify-start"}>
+            {m.rol === "asistente" && (
+              <div className="w-7 h-7 rounded-xl flex items-center justify-center mr-2 shrink-0 mt-0.5" style={{ background: "rgba(0,184,148,0.1)" }}>
+                <Bot className="w-3.5 h-3.5" style={{ color: "#00B894" }} />
+              </div>
+            )}
+            <div
+              className="max-w-[80%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed"
+              style={
+                m.rol === "usuario"
+                  ? { background: "#0A2540", color: "#ffffff" }
+                  : { background: "#f8fafc", color: "#334155", border: "1px solid #e2e8f0" }
+              }
+            >
+              {m.texto || (cargando && i === mensajes.length - 1 ? (
+                <span className="flex gap-1">
+                  <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                  <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                  <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                </span>
+              ) : "")}
+            </div>
+            {m.rol === "usuario" && (
+              <div className="w-7 h-7 rounded-xl flex items-center justify-center ml-2 shrink-0 mt-0.5" style={{ background: "rgba(10,37,64,0.1)" }}>
+                <User className="w-3.5 h-3.5" style={{ color: "#0A2540" }} />
+              </div>
+            )}
+          </div>
+        ))}
+        <div ref={bottomRef} />
+      </div>
+
+      <div style={{ borderTop: "1px solid #f1f5f9" }}>
+        <div className="px-4 pt-3 pb-2 flex flex-wrap gap-2">
+          {CHIPS.map((chip) => (
+            <button
+              key={chip}
+              onClick={() => enviar(chip)}
+              disabled={cargando}
+              className="text-xs px-3 py-1.5 rounded-full border transition-colors disabled:opacity-40"
+              style={{ borderColor: "#e2e8f0", color: "#475569", background: "#f8fafc" }}
+            >
+              {chip}
+            </button>
+          ))}
+        </div>
+        <div className="flex gap-2 px-4 pb-4">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && enviar()}
+            placeholder="Escribe una pregunta..."
+            disabled={cargando}
+            className="flex-1 text-sm px-4 py-2.5 rounded-xl border outline-none transition-colors"
+            style={{ borderColor: "#e2e8f0", color: "#334155" }}
+          />
+          <button
+            onClick={() => enviar()}
+            disabled={!input.trim() || cargando}
+            className="w-10 h-10 rounded-xl flex items-center justify-center text-white transition-all disabled:opacity-40"
+            style={{ background: "#0A2540" }}
+          >
+            <Send className="w-4 h-4" />
+          </button>
+        </div>
+        <p className="text-center text-xs pb-2" style={{ color: "#94a3b8" }}>
+          Este chat usa Gemini API real
+        </p>
+      </div>
+    </div>
+  );
+            }
