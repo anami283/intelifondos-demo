@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, Search } from "lucide-react";
+import { Bell, Search, User } from "lucide-react";
 
 interface HeaderProps {
   title: string;
@@ -9,39 +9,43 @@ interface HeaderProps {
 
 export function Header({ title, subtitle }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-40 backdrop-blur-xl bg-white/70 dark:bg-slate-900/70 border-b border-slate-200/50 dark:border-slate-700/50 shadow-premium">
-      <div className="max-w-full px-6 py-4">
-        <div className="flex items-center justify-between">
+    <header className="sticky top-12 z-30 backdrop-blur-xl bg-white/80 border-b border-slate-200/60 shadow-sm">
+      <div className="px-4 lg:px-6 py-4">
+        <div className="flex items-center justify-between gap-4">
           {/* Title Section */}
-          <div className="flex-1">
-            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary via-accent to-purple-600 bg-clip-text text-transparent animate-gradient">
+          <div className="flex-1 min-w-0">
+            <h1 className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent truncate">
               {title}
             </h1>
             {subtitle && (
-              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1 animate-fade-in-up">
+              <p className="text-xs lg:text-sm text-slate-600 mt-0.5 truncate">
                 {subtitle}
               </p>
             )}
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-3">
-            {/* Search Button */}
-            <button className="glass-effect p-2.5 rounded-xl hover:bg-slate-100/50 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 transition-all hover:scale-105 active:scale-95">
+          <div className="flex items-center gap-2">
+            {/* Search Button - Hidden on mobile */}
+            <button 
+              className="hidden lg:flex p-2.5 rounded-xl hover:bg-slate-100 text-slate-600 transition-all hover:scale-105 active:scale-95"
+              aria-label="Search"
+            >
               <Search className="w-5 h-5" />
             </button>
-            
+
             {/* Notifications Button */}
-            <button className="glass-effect p-2.5 rounded-xl hover:bg-slate-100/50 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 relative transition-all hover:scale-105 active:scale-95">
+            <button 
+              className="relative p-2.5 rounded-xl hover:bg-slate-100 text-slate-600 transition-all hover:scale-105 active:scale-95"
+              aria-label="Notifications"
+            >
               <Bell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-gradient-to-br from-accent to-primary rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-glow animate-pulse-subtle">
-                3
-              </span>
+              <span className="absolute top-1 right-1 w-2 h-2 bg-gradient-to-br from-red-500 to-pink-600 rounded-full" />
             </button>
-            
+
             {/* User Avatar */}
-            <div className="glass-effect w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-semibold shadow-premium cursor-pointer transition-all hover:scale-105 active:scale-95 hover:shadow-glow">
-              CF
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center text-white font-semibold shadow-lg cursor-pointer transition-all hover:scale-105 active:scale-95">
+              <User className="w-5 h-5" />
             </div>
           </div>
         </div>
