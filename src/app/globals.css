@@ -2,156 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ========================================
-   🎨 SISTEMA DE DISEÑO PROFESIONAL
-   UI/UX Master - 30+ años experiencia
-   Optimizado para efecto WOW
-======================================== */
-
-:root {
-  /* Paleta Premium - Indigo & Purple */
-  --color-primary: #6366F1;        /* Indigo vibrante */
-  --color-primary-dark: #4F46E5;
-  --color-primary-light: #818CF8;
-  
-  --color-secondary: #8B5CF6;      /* Purple elegante */
-  --color-secondary-dark: #7C3AED;
-  --color-secondary-light: #A78BFA;
-  
-  --color-accent: #10B981;         /* Emerald success */
-  --color-accent-dark: #059669;
-  --color-accent-light: #34D399;
-  
-  --color-warning: #F59E0B;        /* Amber */
-  --color-danger: #EF4444;         /* Red */
-  
-  /* Neutrales sofisticados */
-  --color-bg: #F9FAFB;             /* Gray 50 */
-  --color-bg-secondary: #F3F4F6;   /* Gray 100 */
-  --color-surface: #FFFFFF;
-  --color-border: #E5E7EB;         /* Gray 200 */
-  
-  --color-text: #111827;           /* Gray 900 */
-  --color-text-secondary: #6B7280; /* Gray 500 */
-  --color-text-muted: #9CA3AF;     /* Gray 400 */
-  
-  /* Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(255, 255, 255, 0.3);
-  
-  /* Sombras profesionales */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-  --shadow-glow: 0 0 15px rgba(99, 102, 241, 0.3);
-}
-
 @layer base {
-  * {
-    @apply border-border;
+  :root {
+    --color-primary: #6366F1;
+    --color-accent: #10B981;
   }
-  
+
+  * {
+    @apply border-gray-200;
+  }
+
   html {
     @apply scroll-smooth;
   }
-  
+
   body {
-    @apply bg-[var(--color-bg)] text-[var(--color-text)] antialiased;
+    @apply bg-gray-50 text-gray-900 antialiased;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
-  
-  /* Tipografía profesional con Inter */
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold text-[var(--color-text)] tracking-tight;
-    font-family: 'Inter', sans-serif;
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl;
   }
-  
-  h1 { @apply text-4xl lg:text-5xl leading-tight; }
-  h2 { @apply text-3xl lg:text-4xl leading-tight; }
-  h3 { @apply text-2xl lg:text-3xl; }
-  h4 { @apply text-xl lg:text-2xl; }
-  
-  code, pre, .font-mono {
-    font-family: 'JetBrains Mono', 'Fira Code', monospace;
-    @apply text-sm;
+
+  .shadow-premium {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+
+  .shadow-glow {
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+  }
+
+  .animate-pulse-subtle {
+    animation: pulse-subtle 2s ease-in-out infinite;
+  }
+
+  .animate-gradient {
+    background-size: 200% auto;
+    animation: gradient 3s ease infinite;
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
   }
 }
 
 @layer utilities {
-  /* Gradientes premium */
-  .gradient-primary {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-  }
-  
-  .gradient-accent {
-    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-primary) 100%);
-  }
-  
-  .gradient-mesh {
-    background: 
-      radial-gradient(at 27% 37%, hsla(215, 98%, 61%, 0.3) 0px, transparent 0%),
-      radial-gradient(at 97% 21%, hsla(125, 98%, 72%, 0.2) 0px, transparent 50%),
-      radial-gradient(at 52% 99%, hsla(354, 98%, 61%, 0.2) 0px, transparent 50%),
-      radial-gradient(at 10% 29%, hsla(256, 96%, 67%, 0.3) 0px, transparent 50%);
-  }
-  
-  /* Texto con gradiente */
-  .text-gradient {
-    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
-  }
-  
-  /* Glassmorphism moderno */
-  .glass {
-    @apply bg-white/80 backdrop-blur-xl border border-white/20;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
-  }
-  
-  .glass-dark {
-    @apply bg-gray-900/80 backdrop-blur-xl border border-white/10;
-  }
-  
-  /* Efectos hover premium */
-  .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
-  }
-  
-  .hover-glow {
-    @apply transition-all duration-300;
-  }
-  .hover-glow:hover {
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
-  }
-  
-  /* Botones premium */
-  .btn-primary {
-    @apply bg-gradient-to-r from-primary to-secondary text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5;
-  }
-  
-  .btn-glass {
-    @apply glass px-6 py-3 rounded-xl font-semibold hover:bg-white/90 transition-all duration-300;
+  .transition-all {
+    @apply transition-all duration-300 ease-in-out;
   }
 }
 
-/* Scrollbar personalizado premium */
-::-webkit-scrollbar {
-  @apply w-2 h-2;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-gray-100;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-primary/30 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-primary/50;
-}
-
-/* Animaciones profesionales */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -163,52 +66,23 @@
   }
 }
 
-@keyframes slideIn {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes pulse-glow {
+@keyframes pulse-subtle {
   0%, 100% {
-    box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+    opacity: 1;
   }
   50% {
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.8);
+    opacity: 0.8;
   }
 }
 
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
   }
   50% {
-    transform: translateY(-10px);
+    background-position: 100% 50%;
   }
-}
-
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out;
-}
-
-.animate-slide-in {
-  animation: slideIn 0.3s ease-out;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-/* Utilidades responsivas */
-@media (max-width: 768px) {
-  .glass {
-    @apply bg-white/95 backdrop-blur-sm;
+  100% {
+    background-position: 0% 50%;
   }
 }
