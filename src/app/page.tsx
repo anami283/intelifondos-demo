@@ -194,7 +194,7 @@ export default function LandingPage() {
                   ✦ Gemini AI · Análisis en tiempo real
                 </span>
               </div>
-              <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight mb-6">
+              <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight mb-6" style={{color: '#ffffff'}}>
               <span className="text-white">Su fondo merece</span>{" "}
                 <span className="text-gradient-verde">inteligencia artificial</span>
               </h1>
