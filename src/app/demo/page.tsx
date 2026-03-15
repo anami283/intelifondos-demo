@@ -1,103 +1,101 @@
 import Link from "next/link";
-import { Users, BarChart2, Settings, BookOpen, ArrowRight, Sparkles } from "lucide-react";
+import { LayoutDashboard, CreditCard, Users, FileText, Bot } from "lucide-react";
 
-const roles = [
+const ROLES = [
   {
-        title: "Asociado",
-        icon: <Users className="w-7 h-7" />,
-        desc: "Consulta el estado de tus creditos, saldos y aplica a nuevas solicitudes.",
-        href: "/demo/solicitudes",
-        gradient: "linear-gradient(135deg, #0A2540 0%, #1a3a5c 100%)",
-        badge: "Vista Asociado",
+    id: "gerente",
+    label: "Gerente General",
+    desc: "Vision global: KPIs, cartera, rentabilidad y alertas criticas",
+    href: "/demo/dashboard",
+    icon: LayoutDashboard,
+    badge: "Recomendado",
+    badgeColor: "#00B894",
   },
   {
-        title: "Comite de Credito",
-        icon: <BarChart2 className="w-7 h-7" />,
-        desc: "Revisa solicitudes con el apoyo del score IA. Aprueba o rechaza con un clic.",
-        href: "/demo/solicitudes",
-        gradient: "linear-gradient(135deg, #00B894 0%, #00a884 100%)",
-        badge: "Vista Comite",
-        highlight: true,
+    id: "cartera",
+    label: "Gestor de Cartera",
+    desc: "Seguimiento de creditos, mora y recaudo mensual",
+    href: "/demo/cartera",
+    icon: CreditCard,
+    badge: "Creditos",
+    badgeColor: "#0284c7",
   },
   {
-        title: "Administrador",
-        icon: <Settings className="w-7 h-7" />,
-        desc: "Dashboard completo: cartera, KPIs, alertas de mora y analisis de portafolio.",
-        href: "/demo/dashboard",
-        gradient: "linear-gradient(135deg, #0A2540 0%, #00B894 100%)",
-        badge: "Vista Admin",
+    id: "rrhh",
+    label: "Recursos Humanos",
+    desc: "Planilla de nomina, descuentos y envio a RRHH",
+    href: "/demo/nomina",
+    icon: Users,
+    badge: "Nomina",
+    badgeColor: "#7c3aed",
   },
   {
-        title: "Contador / RRHH",
-        icon: <BookOpen className="w-7 h-7" />,
-        desc: "Gestion de planilla, exportacion de nomina e integracion con sistemas de RRHH.",
-        href: "/demo/nomina",
-        gradient: "linear-gradient(135deg, #1a3a5c 0%, #0284c7 100%)",
-        badge: "Vista Contable",
+    id: "credito",
+    label: "Analista de Credito",
+    desc: "Revision de solicitudes con score IA y recomendaciones",
+    href: "/demo/solicitudes",
+    icon: FileText,
+    badge: "IA Score",
+    badgeColor: "#d97706",
   },
-  ];
+  {
+    id: "ia",
+    label: "Asistente IA",
+    desc: "Chat inteligente con acceso a todos los modulos del fondo",
+    href: "/demo/ia",
+    icon: Bot,
+    badge: "Gemini",
+    badgeColor: "#059669",
+  },
+];
 
 export default function DemoPage() {
-    return (
-          <div className="min-h-[calc(100vh-2.5rem)] flex items-center justify-center px-6 py-16" style={{ background: "#F0F4F8" }}>
-                  <div className="max-w-4xl w-full mx-auto">
-                          <div className="text-center mb-12">
-                                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4" style={{ background: "rgba(0,184,148,0.1)", border: "1px solid rgba(0,184,148,0.2)" }}>
-                                                <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#00B894" }} />
-                                                <span className="text-xs font-semibold" style={{ color: "#00B894" }}>Demo interactivo en vivo</span>span>
-                                    </div>div>
-                                    <h1 className="text-3xl font-bold mb-3" style={{ color: "#0A2540", letterSpacing: "-0.02em" }}>
-                                                Seleccione su rol
-                                    </h1>h1>
-                                    <p className="text-lg" style={{ color: "#64748b" }}>
-                                                Explore la plataforma desde la perspectiva de cada usuario
-                                    </p>p>
-                          </div>div>
-                  
-                          <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                            {roles.map((role) => (
-                        <Link key={role.title} href={role.href}>
-                                      <div
-                                                        className="relative rounded-2xl p-6 cursor-pointer hover:scale-[1.02] hover:shadow-xl transition-all duration-200 text-white overflow-hidden"
-                                                        style={{
-                                                                            background: role.gradient,
-                                                                            boxShadow: role.highlight
-                                                                                                  ? "0 8px 30px rgba(0,184,148,0.3)"
-                                                                                                  : "0 4px 12px rgba(0,0,0,0.15)",
-                                                                            outline: role.highlight ? "2px solid rgba(0,184,148,0.5)" : "none",
-                                                                            outlineOffset: "2px",
-                                                        }}
-                                                      >
-                                                      <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-10" style={{ background: "rgba(255,255,255,0.3)", transform: "translate(30%,-30%)" }} />
-                                                      <span
-                                                                          className="absolute top-4 right-4 text-xs font-semibold px-2 py-0.5 rounded-full"
-                                                                          style={{ background: "rgba(255,255,255,0.2)", backdropFilter: "blur(4px)" }}
-                                                                        >
-                                                        {role.badge}
-                                                      </span>span>
-                                                      <div className="mb-4 opacity-90">{role.icon}</div>div>
-                                                      <h2 className="text-xl font-bold mb-2">{role.title}</h2>h2>
-                                                      <p className="text-sm leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.75)" }}>{role.desc}</p>p>
-                                                      <div className="flex items-center gap-1 text-sm font-semibold" style={{ color: "rgba(255,255,255,0.85)" }}>
-                                                                        Explorar <ArrowRight className="w-4 h-4" />
-                                                      </div>div>
-                                      </div>div>
-                        </Link>Link>
-                      ))}
-                          </div>div>
-                  
-                          <div className="text-center">
-                                    <Link
-                                                  href="/demo/ia"
-                                                  className="inline-flex items-center gap-3 text-white font-bold px-8 py-3.5 rounded-2xl transition-all hover:scale-105 hover:shadow-lg"
-                                                  style={{ background: "linear-gradient(135deg, #0A2540 0%, #00B894 100%)", boxShadow: "0 4px 15px rgba(0,184,148,0.3)" }}
-                                                >
-                                                <Sparkles className="w-5 h-5" />
-                                                Probar Asistente IA - Gemini real
-                                                <ArrowRight className="w-4 h-4" />
-                                    </Link>Link>
-                          </div>div>
-                  </div>div>
-          </div>div>
-        );
-}</div>
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12" style={{ background: "#f8fafc" }}>
+      <div className="text-center mb-10">
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-4" style={{ background: "rgba(0,184,148,0.1)", color: "#00B894" }}>
+          <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#00B894" }} />
+          Demo interactivo en vivo
+        </div>
+        <h1 className="text-3xl font-bold mb-3" style={{ color: "#0A2540" }}>
+          Seleccione su rol
+        </h1>
+        <p className="text-lg" style={{ color: "#64748b" }}>
+          Explore la plataforma desde la perspectiva de cada usuario
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl">
+        {ROLES.map((role) => {
+          const Icon = role.icon;
+          return (
+            <Link
+              key={role.id}
+              href={role.href}
+              className="group bg-white rounded-2xl p-5 transition-all hover:shadow-lg hover:-translate-y-0.5"
+              style={{ border: "1px solid rgba(226,232,240,0.8)", boxShadow: "0 1px 4px rgba(0,0,0,0.04)" }}
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "rgba(10,37,64,0.06)" }}>
+                  <Icon className="w-5 h-5" style={{ color: "#0A2540" }} />
+                </div>
+                <span
+                  className="text-xs font-semibold px-2 py-0.5 rounded-full"
+                  style={{ background: role.badgeColor + "22", color: role.badgeColor }}
+                >
+                  {role.badge}
+                </span>
+              </div>
+              <h2 className="text-sm font-bold mb-1" style={{ color: "#0A2540" }}>{role.label}</h2>
+              <p className="text-xs leading-relaxed" style={{ color: "#64748b" }}>{role.desc}</p>
+            </Link>
+          );
+        })}
+      </div>
+
+      <p className="mt-8 text-xs text-center" style={{ color: "#94a3b8" }}>
+        Intelifondos - Sistema de gestion para fondos de empleados
+      </p>
+    </div>
+  );
+}
