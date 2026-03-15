@@ -9,12 +9,12 @@ interface HeaderProps {
 
 export function Header({ title, subtitle }: HeaderProps) {
   return (
-    <header className="sticky top-12 z-30 backdrop-blur-xl bg-white/80 border-b border-slate-200/60 shadow-sm">
+    <header className="bg-white border-b border-slate-200 shadow-sm">
       <div className="px-4 lg:px-6 py-4">
         <div className="flex items-center justify-between gap-4">
           {/* Title Section */}
           <div className="flex-1 min-w-0">
-            <h1 className="text-xl lg:text-2xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent truncate">
+            <h1 className="text-xl lg:text-2xl font-bold text-slate-900 truncate">
               {title}
             </h1>
             {subtitle && (
