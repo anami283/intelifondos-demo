@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Settings, User, Bell, Shield, Building2, CreditCard, ChevronRight, Check, Save, ToggleLeft, ToggleRight, Info } from "lucide-react";
+import { Settings, Bell, Shield, Building2, CreditCard, ChevronRight, Check, Save, Info } from "lucide-react";
 import { fondo } from "@/data/demo-data";
 
 type Tab = "general" | "notificaciones" | "creditos" | "seguridad" | "integraciones";
@@ -174,41 +174,51 @@ export default function ConfiguracionPage() {
           borderRight: "1px solid #e2e8f0",
           padding: "1.25rem 0.75rem",
           flexShrink: 0,
+          display: "flex",
+          flexDirection: "column",
         }}>
-          {TABS.map((t) => {
-            const Icon = t.icon;
-            const active = tab === t.id;
-            return (
-              <button
-                key={t.id}
-                onClick={() => setTab(t.id)}
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.625rem",
-                  padding: "0.625rem 0.75rem",
-                  borderRadius: "0.5rem",
-                  border: "none",
-                  background: active ? "#0A2540" : "transparent",
-                  color: active ? "#ffffff" : "#64748b",
-                  fontSize: "0.8125rem",
-                  fontWeight: active ? 700 : 500,
-                  cursor: "pointer",
-                  marginBottom: "0.25rem",
-                  textAlign: "left",
-                  transition: "all 0.15s",
-                }}
-              >
-                <Icon style={{ width: "1rem", height: "1rem", flexShrink: 0 }} />
-                {t.label}
-                {active && <ChevronRight style={{ width: "0.75rem", height: "0.75rem", marginLeft: "auto" }} />}
-              </button>
-            );
-          })}
+          <div style={{ flex: 1 }}>
+            {TABS.map((t) => {
+              const Icon = t.icon;
+              const active = tab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.625rem",
+                    padding: "0.625rem 0.75rem",
+                    borderRadius: "0.5rem",
+                    border: "none",
+                    background: active ? "#0A2540" : "transparent",
+                    color: active ? "#ffffff" : "#64748b",
+                    fontSize: "0.8125rem",
+                    fontWeight: active ? 700 : 500,
+                    cursor: "pointer",
+                    marginBottom: "0.25rem",
+                    textAlign: "left",
+                    transition: "all 0.15s",
+                  }}
+                >
+                  <Icon style={{ width: "1rem", height: "1rem", flexShrink: 0 }} />
+                  {t.label}
+                  {active && <ChevronRight style={{ width: "0.75rem", height: "0.75rem", marginLeft: "auto" }} />}
+                </button>
+              );
+            })}
+          </div>
 
           {/* Demo info box */}
-          <div style={{ marginTop: "auto", padding: "0.75rem", borderRadius: "0.5rem", background: "rgba(0,184,148,0.06)", border: "1px solid rgba(0,184,148,0.2)", marginTop: "1.5rem" }}>
+          <div style={{
+            padding: "0.75rem",
+            borderRadius: "0.5rem",
+            background: "rgba(0,184,148,0.06)",
+            border: "1px solid rgba(0,184,148,0.2)",
+            marginTop: "1.5rem",
+          }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.375rem", marginBottom: "0.375rem" }}>
               <Info style={{ width: "0.75rem", height: "0.75rem", color: "#00B894" }} />
               <span style={{ fontSize: "0.65rem", fontWeight: 700, color: "#047857" }}>Modo demo</span>
@@ -340,7 +350,7 @@ export default function ConfiguracionPage() {
               <SectionTitle title="Canales de Notificacion" desc="Medios para recibir alertas" />
               <div style={{ background: "#ffffff", borderRadius: "0.875rem", padding: "0 1.25rem", border: "1px solid #e2e8f0" }}>
                 {[
-                  { key: "email", label: "Correo electronico", desc: "anamilenaa@gmail.com · Activo" },
+                  { key: "email", label: "Correo electronico", desc: "anamilenaa@gmail.com - Activo" },
                   { key: "whatsapp", label: "WhatsApp Business", desc: "Requiere numero registrado" },
                 ].map((item) => (
                   <SettingRow key={item.key} label={item.label} desc={item.desc}>
@@ -441,4 +451,3 @@ export default function ConfiguracionPage() {
     </>
   );
 }
-
