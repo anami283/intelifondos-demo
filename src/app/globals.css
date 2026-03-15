@@ -8,10 +8,6 @@
     --color-accent: #10B981;
   }
 
-  * {
-    @apply border-gray-200;
-  }
-
   html {
     @apply scroll-smooth;
   }
