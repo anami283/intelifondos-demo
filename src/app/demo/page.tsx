@@ -1,97 +1,103 @@
 import Link from "next/link";
-import { DemoBanner } from "@/components/layout/DemoBanner";
-import {
-  Users,
-  BarChart2,
-  Settings,
-  BookOpen,
-  ArrowRight,
-} from "lucide-react";
+import { Users, BarChart2, Settings, BookOpen, ArrowRight, Sparkles } from "lucide-react";
 
 const roles = [
   {
-    title: "Asociado",
-    icon: <Users className="w-8 h-8" />,
-    desc: "Consulta el estado de tus créditos, saldos y aplica a nuevas solicitudes.",
-    href: "/demo/solicitudes",
-    color: "from-[#0A2540] to-[#1a3a5c]",
-    badge: "Vista Asociado",
+        title: "Asociado",
+        icon: <Users className="w-7 h-7" />,
+        desc: "Consulta el estado de tus creditos, saldos y aplica a nuevas solicitudes.",
+        href: "/demo/solicitudes",
+        gradient: "linear-gradient(135deg, #0A2540 0%, #1a3a5c 100%)",
+        badge: "Vista Asociado",
   },
   {
-    title: "Comité de Crédito",
-    icon: <BarChart2 className="w-8 h-8" />,
-    desc: "Revisa solicitudes con el apoyo del score IA. Aprueba o rechaza con un clic.",
-    href: "/demo/solicitudes",
-    color: "from-[#00B894] to-[#00a884]",
-    badge: "Vista Comité",
-    highlight: true,
+        title: "Comite de Credito",
+        icon: <BarChart2 className="w-7 h-7" />,
+        desc: "Revisa solicitudes con el apoyo del score IA. Aprueba o rechaza con un clic.",
+        href: "/demo/solicitudes",
+        gradient: "linear-gradient(135deg, #00B894 0%, #00a884 100%)",
+        badge: "Vista Comite",
+        highlight: true,
   },
   {
-    title: "Administrador",
-    icon: <Settings className="w-8 h-8" />,
-    desc: "Dashboard completo: cartera, KPIs, alertas de mora y análisis de portafolio.",
-    href: "/demo/dashboard",
-    color: "from-[#6C63FF] to-[#5b52e8]",
-    badge: "Vista Admin",
+        title: "Administrador",
+        icon: <Settings className="w-7 h-7" />,
+        desc: "Dashboard completo: cartera, KPIs, alertas de mora y analisis de portafolio.",
+        href: "/demo/dashboard",
+        gradient: "linear-gradient(135deg, #0A2540 0%, #00B894 100%)",
+        badge: "Vista Admin",
   },
   {
-    title: "Contador / RRHH",
-    icon: <BookOpen className="w-8 h-8" />,
-    desc: "Gestión de planilla, exportación de nómina e integración con sistemas de RRHH.",
-    href: "/demo/nomina",
-    color: "from-[#0A2540] to-[#6C63FF]",
-    badge: "Vista Contable",
+        title: "Contador / RRHH",
+        icon: <BookOpen className="w-7 h-7" />,
+        desc: "Gestion de planilla, exportacion de nomina e integracion con sistemas de RRHH.",
+        href: "/demo/nomina",
+        gradient: "linear-gradient(135deg, #1a3a5c 0%, #0284c7 100%)",
+        badge: "Vista Contable",
   },
-];
+  ];
 
 export default function DemoPage() {
-  return (
-    <div className="min-h-screen bg-[#F8FAFB]">
-      <DemoBanner />
-      <div className="max-w-4xl mx-auto px-6 py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-[#0A2540] mb-3">
-            Seleccione su rol
-          </h1>
-          <p className="text-gray-500 text-lg">
-            Explore la plataforma desde la perspectiva de cada usuario
-          </p>
-        </div>
-        <div className="grid sm:grid-cols-2 gap-5">
-          {roles.map((role) => (
-            <Link key={role.title} href={role.href}>
-              <div
-                className={`relative rounded-2xl p-6 cursor-pointer hover:scale-[1.02] transition-transform duration-200 shadow-sm ${
-                  role.highlight ? "ring-2 ring-[#00B894]" : ""
-                } bg-gradient-to-br ${role.color} text-white`}
-              >
-                <span className="absolute top-4 right-4 text-xs font-medium bg-white/20 px-2 py-0.5 rounded-full">
-                  {role.badge}
-                </span>
-                <div className="mb-4 opacity-90">{role.icon}</div>
-                <h2 className="text-xl font-bold mb-2">{role.title}</h2>
-                <p className="text-white/75 text-sm leading-relaxed mb-4">
-                  {role.desc}
-                </p>
-                <div className="flex items-center gap-1 text-white/80 text-sm font-medium">
-                  Explorar
-                  <ArrowRight className="w-4 h-4" />
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-        <div className="text-center mt-8">
-          <Link
-            href="/demo/ia"
-            className="inline-flex items-center gap-2 bg-[#6C63FF] hover:bg-[#5b52e8] text-white font-semibold px-6 py-3 rounded-xl transition-colors"
-          >
-            <span className="w-2 h-2 rounded-full bg-white pulse-verde" />
-            Probar Asistente IA (Gemini real)
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </div>
-    </div>
-  );
-}
+    return (
+          <div className="min-h-[calc(100vh-2.5rem)] flex items-center justify-center px-6 py-16" style={{ background: "#F0F4F8" }}>
+                  <div className="max-w-4xl w-full mx-auto">
+                          <div className="text-center mb-12">
+                                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4" style={{ background: "rgba(0,184,148,0.1)", border: "1px solid rgba(0,184,148,0.2)" }}>
+                                                <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#00B894" }} />
+                                                <span className="text-xs font-semibold" style={{ color: "#00B894" }}>Demo interactivo en vivo</span>span>
+                                    </div>div>
+                                    <h1 className="text-3xl font-bold mb-3" style={{ color: "#0A2540", letterSpacing: "-0.02em" }}>
+                                                Seleccione su rol
+                                    </h1>h1>
+                                    <p className="text-lg" style={{ color: "#64748b" }}>
+                                                Explore la plataforma desde la perspectiva de cada usuario
+                                    </p>p>
+                          </div>div>
+                  
+                          <div className="grid sm:grid-cols-2 gap-4 mb-8">
+                            {roles.map((role) => (
+                        <Link key={role.title} href={role.href}>
+                                      <div
+                                                        className="relative rounded-2xl p-6 cursor-pointer hover:scale-[1.02] hover:shadow-xl transition-all duration-200 text-white overflow-hidden"
+                                                        style={{
+                                                                            background: role.gradient,
+                                                                            boxShadow: role.highlight
+                                                                                                  ? "0 8px 30px rgba(0,184,148,0.3)"
+                                                                                                  : "0 4px 12px rgba(0,0,0,0.15)",
+                                                                            outline: role.highlight ? "2px solid rgba(0,184,148,0.5)" : "none",
+                                                                            outlineOffset: "2px",
+                                                        }}
+                                                      >
+                                                      <div className="absolute top-0 right-0 w-32 h-32 rounded-full opacity-10" style={{ background: "rgba(255,255,255,0.3)", transform: "translate(30%,-30%)" }} />
+                                                      <span
+                                                                          className="absolute top-4 right-4 text-xs font-semibold px-2 py-0.5 rounded-full"
+                                                                          style={{ background: "rgba(255,255,255,0.2)", backdropFilter: "blur(4px)" }}
+                                                                        >
+                                                        {role.badge}
+                                                      </span>span>
+                                                      <div className="mb-4 opacity-90">{role.icon}</div>div>
+                                                      <h2 className="text-xl font-bold mb-2">{role.title}</h2>h2>
+                                                      <p className="text-sm leading-relaxed mb-4" style={{ color: "rgba(255,255,255,0.75)" }}>{role.desc}</p>p>
+                                                      <div className="flex items-center gap-1 text-sm font-semibold" style={{ color: "rgba(255,255,255,0.85)" }}>
+                                                                        Explorar <ArrowRight className="w-4 h-4" />
+                                                      </div>div>
+                                      </div>div>
+                        </Link>Link>
+                      ))}
+                          </div>div>
+                  
+                          <div className="text-center">
+                                    <Link
+                                                  href="/demo/ia"
+                                                  className="inline-flex items-center gap-3 text-white font-bold px-8 py-3.5 rounded-2xl transition-all hover:scale-105 hover:shadow-lg"
+                                                  style={{ background: "linear-gradient(135deg, #0A2540 0%, #00B894 100%)", boxShadow: "0 4px 15px rgba(0,184,148,0.3)" }}
+                                                >
+                                                <Sparkles className="w-5 h-5" />
+                                                Probar Asistente IA - Gemini real
+                                                <ArrowRight className="w-4 h-4" />
+                                    </Link>Link>
+                          </div>div>
+                  </div>div>
+          </div>div>
+        );
+}</div>
