@@ -101,8 +101,7 @@ export function ChatGemini() {
   return (
     <div className="flex flex-col h-full gap-4">
       {/* Panel contexto colapsable */}
-      <div className="bg-white rounded-xl border border-gray-100">
-        <button
+      <div className="glass-effect rounded-2xl border border-slate-200/50 dark:border-slate-700/50 shadow-premium">        <button
           onClick={() => setShowContext(!showContext)}
           className="w-full flex items-center justify-between p-4 text-sm font-medium text-gray-700"
         >
@@ -126,8 +125,7 @@ export function ChatGemini() {
       </div>
 
       {/* Chat */}
-      <div className="flex-1 bg-white rounded-xl border border-gray-100 flex flex-col">
-        {/* Mensajes */}
+      <div className="flex-1 glass-effect rounded-2xl border border-slate-200/50 dark:border-slate-700/50 flex flex-col shadow-premium">        {/* Mensajes */}
         <div className="flex-1 p-4 overflow-y-auto space-y-4 max-h-96">
           {messages.map((msg, i) => (
             <div
@@ -170,34 +168,29 @@ export function ChatGemini() {
         </div>
 
         {/* Quick questions */}
-        <div className="px-4 py-2 border-t border-gray-50 flex flex-wrap gap-2">
-          {quickQuestions.map((q) => (
+        <div className="px-4 py-3 border-t border-slate-100 dark:border-slate-700/50 flex flex-wrap gap-2">          {quickQuestions.map((q) => (
             <button
               key={q}
               onClick={() => sendMessage(q)}
               disabled={loading}
-              className="text-xs bg-[#6C63FF]/10 hover:bg-[#6C63FF]/20 text-[#6C63FF] px-3 py-1.5 rounded-full transition-colors disabled:opacity-50"
-            >
+              className="text-xs glass-effect hover:bg-primary/10 text-primary dark:text-accent px-3 py-1.5 rounded-full transition-all hover:scale-105 disabled:opacity-50 border border-primary/20 dark:border-accent/20"            >
               {q}
             </button>
           ))}
         </div>
 
         {/* Input */}
-        <div className="p-4 border-t border-gray-100 flex gap-2">
-          <input
+        <div className="p-4 border-t border-slate-100 dark:border-slate-700/50 flex gap-3">          <input
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage(input)}
             placeholder="Consulte sobre cartera, mora, solicitudes..."
             disabled={loading}
-            className="flex-1 border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#6C63FF]/30 disabled:opacity-50"
-          />
+            className="flex-1 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 dark:focus:ring-accent/30 disabled:opacity-50 bg-white dark:bg-slate-800 transition-all"          />
           <button
             onClick={() => sendMessage(input)}
             disabled={loading || !input.trim()}
-            className="bg-[#6C63FF] hover:bg-[#5b52e8] disabled:bg-gray-200 text-white p-2.5 rounded-lg transition-colors"
-          >
+            className="bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 disabled:from-slate-300 disabled:to-slate-400 text-white p-2.5 rounded-xl transition-all hover:scale-105 active:scale-95 shadow-premium"          >
             <Send className="w-4 h-4" />
           </button>
         </div>
