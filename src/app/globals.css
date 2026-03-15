@@ -48,11 +48,6 @@
   }
 }
 
-@layer utilities {
-  .transition-all {
-    @apply transition-all duration-300 ease-in-out;
-  }
-}
 
 @keyframes fadeInUp {
   from {
