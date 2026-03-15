@@ -149,7 +149,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen">
       {/* HERO */}
-      <section className="bg-[#0A2540] min-h-screen flex flex-col">
+      <section className="bg-gradient-to-br from-[#0A2540] via-[#1a3a5c] to-[#0A2540] min-h-screen flex flex-col">
         {/* Nav */}
         <nav className="flex items-center justify-between px-6 lg:px-12 py-5">
           <div className="flex items-center gap-3">
@@ -198,7 +198,7 @@ export default function LandingPage() {
                 Su fondo merece{" "}
                 <span className="text-gradient-verde">inteligencia artificial</span>
               </h1>
-              <p className="text-white/60 text-lg leading-relaxed mb-8">
+              <p className="text-gray-100 text-lg leading-relaxed mb-8">
                 La plataforma SaaS que moderniza la gestión de crédito, nómina y cartera
                 de fondos de empleados en Colombia. IA real. Resultados reales.
               </p>
@@ -408,12 +408,12 @@ export default function LandingPage() {
       </section>
 
       {/* CTA final */}
-      <section className="py-20 px-6 bg-[#0A2540]">
+      <section className="py-20 px-6 bg-gradient-to-br from-[#0A2540] via-[#1a3a5c] to-[#0A2540]">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl font-bold text-white mb-4">
             La inteligencia que su fondo necesitaba
           </h2>
-          <p className="text-white/60 mb-8">
+          <p className="text-gray-100 mb-8">
             Únase a los fondos de empleados colombianos que ya gestionan su cartera con IA.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
