@@ -26,6 +26,7 @@
 
   h1, h2, h3 {
     font-family: var(--font-playfair), Georgia, serif;
+        color: inherit;
   }
 
   code, pre, .font-mono {
