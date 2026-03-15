@@ -27,7 +27,7 @@ export default function DemoLayout({
       {/* Mobile menu button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed top-4 left-4 z-50 lg:hidden p-2.5 rounded-xl bg-white shadow-lg hover:shadow-xl transition-all border border-slate-200"
+        className="fixed top-16 left-4 z-50 lg:hidden p-2.5 rounded-xl bg-white shadow-lg hover:shadow-xl transition-all border border-slate-200"
       >
         {sidebarOpen ? (
           <X className="w-5 h-5 text-slate-700" />
@@ -36,12 +36,12 @@ export default function DemoLayout({
         )}
       </button>
 
-      <div className="flex">
+      <div className="flex pt-12">
         {/* Sidebar */}
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         
         {/* Main content */}
-        <main className="flex-1 lg:ml-64 transition-all duration-300">
+        <main className="flex-1 w-full lg:ml-64 transition-all duration-300 min-h-screen">
           {children}
         </main>
       </div>
